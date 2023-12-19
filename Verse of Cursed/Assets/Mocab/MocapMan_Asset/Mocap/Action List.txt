@@ -1,0 +1,36 @@
+Dude.fbx, T-Pose.fbx และ Armature.fbx *** เป็นแค่ file สำหรับ ref Avatar เท่านั้นอง
+*** ต้องทำก่อนเพื่อให้ animation file อื่นๆ copy from other avatar
+
+Idels.fbx
+DudeAvatar
+Idle 752-962
+
+walkForward.fbx 
+DudeAvatar
+walkForward 0-30
+
+WalkBack.fbx
+DudeAvatar
+WalkBack 278-306
+
+Left_Strafe.fbx หรือ Strafe Left.fbx(มือทำท่ายิง)
+T-PoseAvatar
+L_strafe 0-31
+
+Right_Strafe.fbx หรือStrafe Right.fbx(มือทำท่ายิง)
+T-PoseAvatar
+R_strafe 0-43
+
+Run_forward.fbx
+ArmatureAvatar
+runforward 0-20
+
+Run_backward.fbx
+ArmatureAvatar
+runBack 0-19
+
+jump.fbx (มีหลายท่าใน fileเดียว) *** เอา loop time และ loop Pose ออก
+DudeAvatar
+fall 201-212
+jump 181-200
+roll 214-265
