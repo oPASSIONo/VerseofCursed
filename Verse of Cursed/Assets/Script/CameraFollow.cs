@@ -44,4 +44,6 @@ public class CameraFollow : MonoBehaviour
         transform.position = followTarget.position - targetRotation * new Vector3(0, 0, distance);
         transform.rotation = targetRotation;
     }
+
+    public Quaternion PlanarRotation => Quaternion.Euler(0, rotationY,0);
 }
