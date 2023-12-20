@@ -394,3 +394,35 @@ Received Import Request.
 Start importing Assets/Mocab/MocapMan_Asset/Mocap/Run_backward.fbx using Guid(ced7eec9d0e182047a561e455509a7fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2e6cbcdd2d6cc24a9edecfcc10eabd96') in 0.036380 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 143
+========================================================================
+Received Import Request.
+  Time since last request: 4462.882820 seconds.
+  path: Assets/Mocab/MocapMan_Asset/Mocap/Jump.fbx
+  artifactKey: Guid(4b9aacf114bf9af42821d7910312d41a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Mocab/MocapMan_Asset/Mocap/Jump.fbx using Guid(4b9aacf114bf9af42821d7910312d41a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '42e5c66434b0a1655a9784018ca1548f') in 12.100837 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 479
+========================================================================
+Received Import Request.
+  Time since last request: 243.739395 seconds.
+  path: Assets/Mocab/MocapMan_Asset/Mocap/Jump.fbx
+  artifactKey: Guid(4b9aacf114bf9af42821d7910312d41a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Mocab/MocapMan_Asset/Mocap/Jump.fbx using Guid(4b9aacf114bf9af42821d7910312d41a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '46bd8a776855d61a3d6c7e3e12bea6db') in 5.943058 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 481
+========================================================================
+Received Import Request.
+  Time since last request: 37.038987 seconds.
+  path: Assets/Mocab/MocapMan_Asset/Character/mocab.controller
+  artifactKey: Guid(3d65ead0eebaa084195e08be2fca9483) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Mocab/MocapMan_Asset/Character/mocab.controller using Guid(3d65ead0eebaa084195e08be2fca9483) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fa730621487effe2d5e19a3216986a58') in 3.004042 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 22.459585 seconds.
+  path: Assets/Mocab/MocapMan_Asset/Character/mocabMan.controller
+  artifactKey: Guid(3d65ead0eebaa084195e08be2fca9483) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Mocab/MocapMan_Asset/Character/mocabMan.controller using Guid(3d65ead0eebaa084195e08be2fca9483) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e6cf2d19438d12d24d6a154682b5f0cd') in 0.023238 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
