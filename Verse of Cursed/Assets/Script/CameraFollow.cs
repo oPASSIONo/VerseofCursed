@@ -1,49 +1,37 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Transform followTarget;
-
-    [SerializeField] float rotationSpeed = 2f;
-    [SerializeField] float distance = 5f;
-
-    [SerializeField] float minVerticalAngle = -45;
-    [SerializeField] float maxVerticalAngle = 45;
-
-    [SerializeField] private Vector2 framingOffset;
-    
-    [SerializeField] bool invertX;
-    [SerializeField] bool invertY;
-    
-    float invertValX;
-    float invertVAlY;
-    
-    private float rotationX;
-    private float rotationY;
-
-    private void Start()
-    {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
+    /*public Transform target;  // The target to follow (player in this case)
+    public Vector3 offset = new Vector3(0f, 0, 0);  // Offset from the target
 
     private void Update()
     {
-        invertValX = (invertX) ? -1 : 1;
-        invertVAlY = (invertY) ? -1 : 1;
-        rotationX += Input.GetAxis("Mouse Y") * rotationSpeed;
-        rotationX = Mathf.Clamp(rotationX, minVerticalAngle, maxVerticalAngle);
+        transform.position = target.position + offset;
+    }*/
+    
+    public Transform player;  // The player to follow
+    public float playerFollowSpeed = 5f;  // Speed of camera following the player
 
-        rotationY += Input.GetAxis("Mouse X") * invertValX * rotationSpeed;
+    public float rotationSpeed = 5f;  // Speed of camera rotation with mouse
+    public Vector3 offset = new Vector3(0f, 5f, -5f);  // Additional offset from the player
 
-        var targetRotation = Quaternion.Euler(rotationX, rotationY, 0);
+    void LateUpdate()
+    {
+        if (player != null)
+        {
+            // Camera follows the player's position with an additional offset
+            Vector3 desiredPosition = player.position - player.forward * offset.z + player.up * offset.y + player.right * offset.x;
+            transform.position = Vector3.Lerp(transform.position, desiredPosition, playerFollowSpeed * Time.deltaTime);
 
-        var focusPosition = followTarget.position + new Vector3(framingOffset.x, framingOffset.y);
-
-        transform.position = followTarget.position - targetRotation * new Vector3(0, 0, distance);
-        transform.rotation = targetRotation;
+            // Camera rotates with the mouse
+            float mouseX = Input.GetAxis("Mouse X");
+            Vector3 rotationAmount = new Vector3(0f, mouseX * rotationSpeed * Time.deltaTime, 0f);
+            Quaternion deltaRotation = Quaternion.Euler(rotationAmount);
+            transform.rotation = Quaternion.Lerp(transform.rotation, player.rotation * deltaRotation, rotationSpeed * Time.deltaTime);
+        }
     }
-
-    public Quaternion PlanarRotation => Quaternion.Euler(0, rotationY,0);
 }
