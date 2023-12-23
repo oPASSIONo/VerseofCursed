@@ -10,9 +10,20 @@ public class Menu : MonoBehaviour
         
     }
 
+<<<<<<< HEAD
     // Update is called once per frame
     void Update()
     {
         
     }
+=======
+   public void Por()
+   {
+      SceneManager.LoadScene("Scenes/Main");
+   }
+   public void QuitGame()
+   {
+      Application.Quit();
+   }
+>>>>>>> parent of 3f1077a (Setting in Progress)
 }
