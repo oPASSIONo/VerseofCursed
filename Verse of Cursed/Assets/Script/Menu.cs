@@ -10,6 +10,10 @@ public class Menu : MonoBehaviour
       SceneManager.LoadScene("Scenes/SampleScene");
    }
 
+   public void Setting()
+   {
+          SceneManager.LoadScene("Scenes/Setting");
+   }
    public void Por()
    {
       SceneManager.LoadScene("Scenes/Main");
