@@ -1,61 +1,87 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public float jumpForce = 300f;
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float rotationSpeed = 500f;
+
+    [Header("Ground Check Setting")]
+    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private Vector3 groundCheckOffset;
+    [SerializeField] private LayerMask groundLayer;
+
+    [Header("Jump Settings")]
+    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private bool allowJump = true;
+
     private bool isGrounded;
 
-    private Rigidbody rb;
+    private Quaternion targetRotation;
 
-    void Start()
+    private CameraFollow cameraController;
+    private CharacterController characterController;
+    private float ySpeed;
+
+    private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        cameraController = Camera.main.GetComponent<CameraFollow>();
+        characterController = GetComponent<CharacterController>();
     }
 
-    void Update()
-    {
-        HandleInput();
-    }
-
-    void HandleInput()
+    private void Update()
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(horizontal, 0f, vertical) * moveSpeed * Time.deltaTime;
+        float moveAmount = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
 
-        rb.MovePosition(transform.position + transform.TransformDirection(movement));
+        var moveInput = (new Vector3(horizontal, 0, vertical)).normalized;
 
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
+        var moveDir = cameraController.PlanarRotation * moveInput;
+
+        GroundCheck();
+
+        if (isGrounded)
         {
-            Debug.Log("Jump!");
-
-            Jump();
+            ySpeed = -0.5f;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Jump();
+            }
         }
+        else
+        {
+            ySpeed += Physics.gravity.y * Time.deltaTime;
+        }
+
+        var velocity = moveDir * moveSpeed;
+        velocity.y = ySpeed;
+
+        characterController.Move(velocity * Time.deltaTime);
+
+        if (moveAmount > 0)
+        {
+            characterController.Move(moveDir * moveSpeed * Time.deltaTime);
+            targetRotation = transform.rotation = Quaternion.LookRotation(moveDir);
+        }
+
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
     
-
     void Jump()
     {
-        Debug.Log("Applying Jump Force!");
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        isGrounded = false;
+        float jumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * jumpForce);
+        characterController.Move(Vector3.up * jumpVelocity * Time.deltaTime);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void GroundCheck()
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
+        isGrounded = Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(0, 1, 0, 0.5f);
+        Gizmos.DrawSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius);
     }
 }
-
-
-
-
