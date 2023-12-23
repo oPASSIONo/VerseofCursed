@@ -490,7 +490,7 @@ MonoBehaviour:
   maxVerticalAngle: 60
   framingOffset: {x: 0, y: 1}
   invertX: 0
-  invertY: 1
+  invertY: 0
 --- !u!1 &337664553
 GameObject:
   m_ObjectHideFlags: 0
@@ -1153,7 +1153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c14c845c240bf494fa3737e95bfdaf3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
