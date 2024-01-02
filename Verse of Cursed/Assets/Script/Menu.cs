@@ -14,10 +14,6 @@ public class Menu : MonoBehaviour
    {
           SceneManager.LoadScene("Scenes/Setting");
    }
-   public void Por()
-   {
-      SceneManager.LoadScene("Scenes/Main");
-   }
    public void QuitGame()
    {
       Application.Quit();
