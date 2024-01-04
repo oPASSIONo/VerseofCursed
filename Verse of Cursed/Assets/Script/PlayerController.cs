@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float rotationSpeed = 500f;
 
     [Header("Ground Check Setting")]
@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     [Header("Jump Settings")]
-    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float jumpForce = 1000f;
     [SerializeField] private bool allowJump = true;
 
     private bool isGrounded;
@@ -21,6 +21,12 @@ public class PlayerController : MonoBehaviour
     private CameraFollow cameraController;
     private CharacterController characterController;
     private float ySpeed;
+    
+    [SerializeField] GameObject playerObject;
+    [SerializeField] GameObject player01;
+    [SerializeField] GameObject player02;
+    
+
 
     private void Awake()
     {
@@ -40,6 +46,7 @@ public class PlayerController : MonoBehaviour
         var moveDir = cameraController.PlanarRotation * moveInput;
 
         GroundCheck();
+        SkillCheck();
 
         if (isGrounded)
         {
@@ -83,5 +90,47 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = new Color(0, 1, 0, 0.5f);
         Gizmos.DrawSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius);
+    }
+    
+    private void SkillCheck()
+    {
+        Mesh playerMesh = GetMesh(playerObject);
+        Mesh p1Mesh = GetMesh(player01);
+        Mesh p2Mesh = GetMesh(player02);
+
+        if (AreMeshesEqual(playerMesh, p1Mesh))
+        {
+            Debug.Log("Player mesh is the same as p1 mesh.");
+            moveSpeed = 6f;
+            jumpForce = 2000f;
+        }
+
+        if (AreMeshesEqual(playerMesh, p2Mesh))
+        {
+            Debug.Log("Player mesh is the same as p2 mesh.");
+            jumpForce = 30000f;
+            moveSpeed = 2f;
+        }
+    }
+
+    Mesh GetMesh(GameObject obj)
+    {
+        MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
+    
+        if (meshFilter != null)
+        {
+            return meshFilter.sharedMesh;
+        }
+        else
+        {
+            Debug.LogError("MeshFilter not found on the GameObject.");
+            return null;
+        }
+    }
+
+    bool AreMeshesEqual(Mesh mesh1, Mesh mesh2)
+    {
+   
+        return mesh1.vertices.Length == mesh2.vertices.Length;
     }
 }
