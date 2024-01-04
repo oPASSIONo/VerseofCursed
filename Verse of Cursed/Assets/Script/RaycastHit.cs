@@ -8,6 +8,7 @@ public class RaycastHit : MonoBehaviour
     public float range = 5f;
     [SerializeField] GameObject playerObject;
     [SerializeField] GameObject sourceObject;
+    [SerializeField] GameObject sourceObject1;
 
     private void Awake()
     {
@@ -20,6 +21,9 @@ public class RaycastHit : MonoBehaviour
             RayShoot();
 
         }
+        
+        RayShoot();
+
     }
 
     public void RayShoot()
@@ -36,6 +40,11 @@ public class RaycastHit : MonoBehaviour
                 PullMesh();
                 Debug.Log("Ray hit: " + hit.collider.gameObject.name);
             }
+            if (hit.collider.CompareTag("Enemy1"))
+            {
+                PullMesh1();
+                Debug.Log("Ray hit: " + hit.collider.gameObject.name);
+            }
         }
     }
     
@@ -48,6 +57,25 @@ public class RaycastHit : MonoBehaviour
         {
             // Copy the mesh from sourceObject to playerObject
             playerMeshFilter.mesh = sourceMeshFilter.mesh;
+            playerObject.transform.localScale = new Vector3(1f, 0.7f, 1f);
+
+        }
+        else
+        {
+            Debug.LogError("MeshFilter not found on sourceObject or playerObject.");
+        }
+    }
+    
+    public void PullMesh1()
+    {
+        MeshFilter sourceMeshFilter1 = sourceObject1.GetComponent<MeshFilter>();
+        MeshFilter playerMeshFilter = playerObject.GetComponent<MeshFilter>();
+        
+        if (sourceMeshFilter1 != null && playerMeshFilter != null)
+        {
+            // Copy the mesh from sourceObject to playerObject
+            playerMeshFilter.mesh = sourceMeshFilter1.mesh;
+            playerObject.transform.localScale = new Vector3(1f, 0.6f, 1f);
         }
         else
         {

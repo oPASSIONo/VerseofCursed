@@ -31,8 +31,8 @@ public class CameraFollow : MonoBehaviour
     private void Update()
     {
         invertValX = (invertX) ? -1 : 1;
-        invertVAlY = (invertY) ? -1 : 1;
-        rotationX += Input.GetAxis("Mouse Y") * rotationSpeed;
+        invertVAlY = (invertY) ? 1 : -1;
+        rotationX += Input.GetAxis("Mouse Y") * invertVAlY  * rotationSpeed;
         rotationX = Mathf.Clamp(rotationX, minVerticalAngle, maxVerticalAngle);
 
         rotationY += Input.GetAxis("Mouse X") * invertValX * rotationSpeed;
