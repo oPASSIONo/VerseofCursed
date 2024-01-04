@@ -14,9 +14,9 @@ public class Menu : MonoBehaviour
    {
           SceneManager.LoadScene("Scenes/Setting");
    }
-   public void Por()
+   public void Back()
    {
-      SceneManager.LoadScene("Scenes/Main");
+      SceneManager.LoadScene("Scenes/Menu");
    }
    public void QuitGame()
    {
