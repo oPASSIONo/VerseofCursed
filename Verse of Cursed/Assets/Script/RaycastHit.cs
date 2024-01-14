@@ -38,12 +38,10 @@ public class RaycastHit : MonoBehaviour
             if (hit.collider.CompareTag("Enemy"))
             {
                 PullMesh();
-                Debug.Log("Ray hit: " + hit.collider.gameObject.name);
             }
             if (hit.collider.CompareTag("Enemy1"))
             {
                 PullMesh1();
-                Debug.Log("Ray hit: " + hit.collider.gameObject.name);
             }
         }
     }
