@@ -1,16 +1,32 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Guard : MonoBehaviour
 {
+    public static event System.Action OnGuardHasSpottedPlayer;
+    
     public float speed = 3;
     public float waitTime = 0.3f;
     public float turnSpeed = 90f;
+    public float timeToSpotPlayer = 0.5f;
+
+    public Light spotLight;
+    public float viewDistance;
+    public LayerMask viewMask;
+    
+    private float viewAngle;
+    private float playerVisibleTimer;
     
     public Transform pathHolder;
+    private Transform player;
+    private Color originalSpotlightColor;
 
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        viewAngle = spotLight.spotAngle;
+        originalSpotlightColor = spotLight.color;
         Vector3[] waypoints = new Vector3[pathHolder.childCount];
         for (int i = 0; i < waypoints.Length; i++)
         {
@@ -19,6 +35,49 @@ public class Guard : MonoBehaviour
             
         }
         StartCoroutine(FollowPath(waypoints));
+    }
+
+    private void Update()
+    {
+        if (CanSeePlayer())
+        {
+            playerVisibleTimer += Time.deltaTime;
+            //spotLight.color = Color.red;
+        }
+        else
+        {
+            playerVisibleTimer -= Time.deltaTime;
+            //spotLight.color = originalSpotlightColor;
+        }
+
+        playerVisibleTimer = Mathf.Clamp(playerVisibleTimer, 0, timeToSpotPlayer);
+        spotLight.color = Color.Lerp(originalSpotlightColor, Color.red, playerVisibleTimer / timeToSpotPlayer);
+
+        if (playerVisibleTimer >= timeToSpotPlayer)
+        {
+            if (OnGuardHasSpottedPlayer != null)
+            {
+                OnGuardHasSpottedPlayer();
+            }
+        }
+    }
+
+    bool CanSeePlayer()
+    {
+        if (Vector3.Distance(transform.position, player.position) < viewDistance)
+        {
+            Vector3 dirToPlayer = (player.position - transform.position).normalized;
+            float angleBetweenGuardAndPlayer = Vector3.Angle(transform.forward, dirToPlayer);
+            if (angleBetweenGuardAndPlayer < viewAngle / 2f)
+            {
+                if (!Physics.Linecast(transform.position, player.position, viewMask))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     IEnumerator FollowPath(Vector3[] waypoints)
@@ -66,5 +125,8 @@ public class Guard : MonoBehaviour
             previousPosition = waypoint.position;
         }
         Gizmos.DrawLine(previousPosition, startPosition);
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, transform.forward * viewDistance);
     }
 }
