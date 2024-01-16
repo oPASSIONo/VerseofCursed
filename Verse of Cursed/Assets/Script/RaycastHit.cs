@@ -7,23 +7,18 @@ public class RaycastHit : MonoBehaviour
 {
     public float range = 5f;
     [SerializeField] GameObject playerObject;
-    [SerializeField] GameObject sourceObject;
-    [SerializeField] GameObject sourceObject1;
-
-    private void Awake()
-    {
-    }
+    [SerializeField] GameObject sourceObjectCapsule;
+    [SerializeField] GameObject sourceObjectCylinder;
+    [SerializeField] GameObject sourceObjectCircle;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        /*if (Input.GetKeyDown(KeyCode.Space))
         {
             RayShoot();
 
-        }
-        
+        }*/
         RayShoot();
-
     }
 
     public void RayShoot()
@@ -37,20 +32,22 @@ public class RaycastHit : MonoBehaviour
         {
             if (hit.collider.CompareTag("Enemy"))
             {
-                PullMesh();
-                Debug.Log("Ray hit: " + hit.collider.gameObject.name);
+                PullMeshCapsule();
             }
             if (hit.collider.CompareTag("Enemy1"))
             {
-                PullMesh1();
-                Debug.Log("Ray hit: " + hit.collider.gameObject.name);
+                PullMeshCylinder();
+            }
+            if (hit.collider.CompareTag("Enemy2"))
+            {
+                PullMeshCircle();
             }
         }
     }
     
-    public void PullMesh()
+    public void PullMeshCapsule()
     {
-        MeshFilter sourceMeshFilter = sourceObject.GetComponent<MeshFilter>();
+        MeshFilter sourceMeshFilter = sourceObjectCapsule.GetComponent<MeshFilter>();
         MeshFilter playerMeshFilter = playerObject.GetComponent<MeshFilter>();
 
         if (sourceMeshFilter != null && playerMeshFilter != null)
@@ -66,16 +63,33 @@ public class RaycastHit : MonoBehaviour
         }
     }
     
-    public void PullMesh1()
+    public void PullMeshCylinder()
     {
-        MeshFilter sourceMeshFilter1 = sourceObject1.GetComponent<MeshFilter>();
+        MeshFilter sourceMeshFilter = sourceObjectCylinder.GetComponent<MeshFilter>();
         MeshFilter playerMeshFilter = playerObject.GetComponent<MeshFilter>();
         
-        if (sourceMeshFilter1 != null && playerMeshFilter != null)
+        if (sourceMeshFilter != null && playerMeshFilter != null)
         {
             // Copy the mesh from sourceObject to playerObject
-            playerMeshFilter.mesh = sourceMeshFilter1.mesh;
+            playerMeshFilter.mesh = sourceMeshFilter.mesh;
             playerObject.transform.localScale = new Vector3(1f, 0.6f, 1f);
+        }
+        else
+        {
+            Debug.LogError("MeshFilter not found on sourceObject or playerObject.");
+        }
+    }
+    
+    public void PullMeshCircle()
+    {
+        MeshFilter sourceMeshFilter = sourceObjectCircle.GetComponent<MeshFilter>();
+        MeshFilter playerMeshFilter = playerObject.GetComponent<MeshFilter>();
+        
+        if (sourceMeshFilter != null && playerMeshFilter != null)
+        {
+            // Copy the mesh from sourceObject to playerObject
+            playerMeshFilter.mesh = sourceMeshFilter.mesh;
+            playerObject.transform.localScale = new Vector3(1f, 1f, 1f);
         }
         else
         {

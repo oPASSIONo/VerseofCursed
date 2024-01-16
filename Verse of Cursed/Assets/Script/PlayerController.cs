@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     [Header("Jump Settings")]
     [SerializeField] private float jumpForce = 1000f;
     [SerializeField] private bool allowJump = true;
-
+ 
     private bool isGrounded;
     private bool previewIsGround;
 
@@ -27,9 +27,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float fallThreshold = 15f;
     private float lastYPosition;
     
+    [Header("Get Mesh System")]
     [SerializeField] GameObject playerObject;
-    [SerializeField] GameObject player01;
-    [SerializeField] GameObject player02;
+    [SerializeField] GameObject playerCapsule;
+    [SerializeField] GameObject playerCylinder;
+    [SerializeField] GameObject playerCircle;
     
     private void Awake()
     {
@@ -65,15 +67,26 @@ public class PlayerController : MonoBehaviour
         
         float currentYPosition = transform.position.y;
         float verticalVelocity = (currentYPosition - lastYPosition) / Time.deltaTime;
+                
+        Mesh player = GetMesh(playerObject);
+        Mesh playerFall = GetMesh(playerCircle);
 
         if (!preview && isGrounded)
         {
-            Debug.Log(verticalVelocity < -fallThreshold);
-            if (verticalVelocity < -fallThreshold)
+            if (AreMeshesEqual(player, playerFall))
             {
-                float damage = Mathf.Abs(verticalVelocity);
-                Debug.Log("Do damage : " + damage);
+                Debug.Log("No Damage !!!");
             }
+            else
+            {
+                if (verticalVelocity < -fallThreshold)
+                {
+                    float damage = Mathf.Abs(verticalVelocity);
+                    Debug.Log(verticalVelocity < -fallThreshold);
+                    Debug.Log("Do damage : " + damage);
+                }
+            }
+            
         }
         lastYPosition = currentYPosition;
 
@@ -104,12 +117,12 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = new Color(0, 1, 0, 0.5f);
         Gizmos.DrawSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius);
     }
-    
+ 
     private void SkillCheck()
     {
         Mesh playerMesh = GetMesh(playerObject);
-        Mesh p1Mesh = GetMesh(player01);
-        Mesh p2Mesh = GetMesh(player02);
+        Mesh p1Mesh = GetMesh(playerCapsule);
+        Mesh p2Mesh = GetMesh(playerCylinder);
 
         if (AreMeshesEqual(playerMesh, p1Mesh))
         {
