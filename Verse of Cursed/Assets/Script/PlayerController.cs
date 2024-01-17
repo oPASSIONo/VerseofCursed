@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    
+    public static event System.Action OnPlayerRespawn;
+
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float rotationSpeed = 500f;
 
@@ -82,8 +85,12 @@ public class PlayerController : MonoBehaviour
                 if (verticalVelocity < -fallThreshold)
                 {
                     float damage = Mathf.Abs(verticalVelocity);
-                    Debug.Log(verticalVelocity < -fallThreshold);
                     Debug.Log("Do damage : " + damage);
+                    if (OnPlayerRespawn != null)
+                    {
+                        OnPlayerRespawn();
+                    }
+                    
                 }
             }
             
