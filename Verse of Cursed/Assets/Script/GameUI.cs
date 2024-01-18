@@ -25,7 +25,6 @@ public class GameUI : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.R))
             { 
                 SceneManager.LoadScene(0);
-                //disable.disable = false;
             }
         }
     }

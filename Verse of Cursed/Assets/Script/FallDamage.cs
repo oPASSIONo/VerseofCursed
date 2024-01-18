@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FallDamage : MonoBehaviour
 {
-    [Header("Fall System")]
+    /*[Header("Fall System")]
     [SerializeField] private float fallThreshold = 30f;
     [SerializeField] private float fallDamageMultiplier = 2f;
 
@@ -28,7 +28,7 @@ public class FallDamage : MonoBehaviour
             float fallDamage = Mathf.Abs(verticalVelocity) / fallDamageMultiplier;
             Debug.Log(verticalVelocity);
             ApplyFallDamage(fallDamage);
-        }*/
+        }#1#
         if (!preview && characterController.isGrounded)
         {
             Debug.Log(verticalVelocity < -fallDamageMultiplier);
@@ -43,5 +43,5 @@ public class FallDamage : MonoBehaviour
         Debug.Log("Fall Damage: " + damageAmount);
         // For example, you might reduce the player's health
         // health -= damageAmount;
-    }
+    }*/
 }

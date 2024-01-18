@@ -1,6 +1,8 @@
 using System;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -38,6 +40,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject playerCylinder;
     [SerializeField] GameObject playerCircle;
 
+
+    [Header("Text")] 
+    [SerializeField] private Text text;
+
     public bool disable;
     private void Awake()
     {
@@ -46,6 +52,7 @@ public class PlayerController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         Guard.OnGuardHasSpottedPlayer += Disable;
         OnPlayerRespawn += Disable;
+        text.text = text.ToString();
     }
     private void Update()
     {
@@ -82,11 +89,14 @@ public class PlayerController : MonoBehaviour
                 
         Mesh player = GetMesh(playerObject);
         Mesh playerFall = GetMesh(playerCircle);
+        Mesh playerJump = GetMesh(playerCylinder);
 
         if (!preview && isGrounded)
         {
-            if (AreMeshesEqual(player, playerFall))
-            {
+            if (AreMeshesEqual(player, playerFall) || AreMeshesEqual(player, playerJump))
+            {                    
+                float d = Mathf.Abs(verticalVelocity);
+                text.text = " No Damage  : " + d;
                 Debug.Log("No Damage !!!");
             }
             else
@@ -94,10 +104,15 @@ public class PlayerController : MonoBehaviour
                 if (verticalVelocity < -fallThreshold)
                 {
                     float damage = Mathf.Abs(verticalVelocity);
-                    Debug.Log("Do damage : " + damage);
-                    if (OnPlayerRespawn != null)
+                    Debug.Log(currentYPosition);
+                    Debug.Log(lastYPosition);
+                    text.text = " Do Damage : " + damage;
+                    if (isGrounded && currentYPosition < lastYPosition)
                     {
-                        OnPlayerRespawn();
+                        if (OnPlayerRespawn != null)
+                        {
+                            OnPlayerRespawn();
+                        }
                     }
                 }
             }

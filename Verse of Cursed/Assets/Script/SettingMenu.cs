@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class SettingMenu : MonoBehaviour
 {
-   public AudioMixer audioMixer;
+   /*public AudioMixer audioMixer;
 
    public Dropdown resolutionDropdown;
    
@@ -59,5 +59,5 @@ public class SettingMenu : MonoBehaviour
    public void SetFullscreen(bool isFullscreen)
    {
       Screen.fullScreen = isFullscreen;
-   }
+   }*/
 }
