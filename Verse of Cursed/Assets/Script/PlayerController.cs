@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -35,20 +37,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject playerCapsule;
     [SerializeField] GameObject playerCylinder;
     [SerializeField] GameObject playerCircle;
-    
+
+    public bool disable;
     private void Awake()
     {
+        disable = false;
         cameraController = Camera.main.GetComponent<CameraFollow>();
         characterController = GetComponent<CharacterController>();
+        Guard.OnGuardHasSpottedPlayer += Disable;
+        OnPlayerRespawn += Disable;
     }
-
     private void Update()
     {
         bool preview = isGrounded;
+        Vector3 moveInput = Vector3.zero;
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         float moveAmount = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
-        var moveInput = (new Vector3(horizontal, 0, vertical)).normalized;
+        if (!disable)
+        {
+            moveInput = (new Vector3(horizontal, 0, vertical)).normalized;
+        }
         var moveDir = cameraController.PlanarRotation * moveInput;
         GroundCheck();
         SkillCheck();
@@ -90,11 +99,11 @@ public class PlayerController : MonoBehaviour
                     {
                         OnPlayerRespawn();
                     }
-                    
                 }
             }
             
         }
+        
         lastYPosition = currentYPosition;
 
         characterController.Move(velocity * Time.deltaTime);
@@ -106,8 +115,21 @@ public class PlayerController : MonoBehaviour
         }
 
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        
+    }
+
+    void Disable()
+    {
+        disable = true;
     }
     
+    private void OnDestroy()
+    {
+        Guard.OnGuardHasSpottedPlayer -= Disable;
+        OnPlayerRespawn -= Disable;
+    }
+
+
     void Jump()
     {
         float jumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * jumpForce);

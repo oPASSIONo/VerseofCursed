@@ -7,10 +7,10 @@ public class GameUI : MonoBehaviour
     public GameObject gameLoseUI;
     public GameObject gameWinUI;
     public GameObject gameRespawnUI;
+    private PlayerController disable;
 
     private bool gameIsOver;
     private bool gameIsOverFromFall;
-    // Start is called before the first frame update
     void Start()
     {
         Guard.OnGuardHasSpottedPlayer += ShowGameLoseUI;
@@ -20,22 +20,14 @@ public class GameUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameIsOver)
+        if (gameIsOver || gameIsOverFromFall)
         {
             if (Input.GetKeyDown(KeyCode.R))
             { 
                 SceneManager.LoadScene(0);
+                //disable.disable = false;
             }
         }
-        
-        if (gameIsOverFromFall)
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            { 
-                SceneManager.LoadScene(0);
-            }
-        }
-        
     }
 
     void ShowGameWinUI()
@@ -57,6 +49,8 @@ public class GameUI : MonoBehaviour
         gameOverUI.SetActive(true);
         gameIsOver = true;
         Guard.OnGuardHasSpottedPlayer -= ShowGameLoseUI;
+        PlayerController.OnPlayerRespawn -= ShowRespawnUI;
+
     }
 
     void OnPlayerRespawnAfterFalling(GameObject gameRespawnUI)
@@ -64,6 +58,8 @@ public class GameUI : MonoBehaviour
         gameRespawnUI.SetActive(true);
         gameIsOverFromFall = true;
         PlayerController.OnPlayerRespawn -= ShowRespawnUI;
+        Guard.OnGuardHasSpottedPlayer -= ShowGameLoseUI;
+
 
     }
 }
